@@ -43,15 +43,4 @@ public class AuthController {
         String token = tokenService.generateToken(user);
         return ResponseEntity.ok(new LoginResponse(token));
     }
-
-    @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) {
-        if (userRepository.findByEmail(request.email()).isPresent()) return ResponseEntity.badRequest().build();
-
-        String encodedPassword = passwordEncoder.encode(request.password());
-        User user = new User(request.email(), encodedPassword, request.role());
-        userRepository.save(user);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterResponse(user.getEmail()));
-    }
 }
