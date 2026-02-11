@@ -1,8 +1,7 @@
-package com.guilherme.schoolmanagement.domain;
+package com.guilherme.schoolmanagement.domain.entities;
 
 import com.guilherme.schoolmanagement.domain.enums.UserRole;
 import jakarta.persistence.*;
-import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

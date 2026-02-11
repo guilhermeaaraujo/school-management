@@ -1,6 +1,6 @@
 package com.guilherme.schoolmanagement.controllers;
 
-import com.guilherme.schoolmanagement.domain.Teacher;
+import com.guilherme.schoolmanagement.domain.entities.Teacher;
 import com.guilherme.schoolmanagement.domain.dto.TeacherDTO;
 import com.guilherme.schoolmanagement.services.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;

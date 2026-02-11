@@ -1,4 +1,4 @@
-package com.guilherme.schoolmanagement.domain;
+package com.guilherme.schoolmanagement.domain.entities;
 
 import jakarta.persistence.*;
 

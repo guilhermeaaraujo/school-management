@@ -1,12 +1,12 @@
-package com.guilherme.schoolmanagement.domain;
+package com.guilherme.schoolmanagement.domain.entities;
 
 import jakarta.persistence.*;
 
 import java.util.Objects;
 
 @Entity
-@Table(name = "teachers")
-public class Teacher {
+@Table(name = "students")
+public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,7 +45,7 @@ public class Teacher {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Teacher student = (Teacher) o;
+        Student student = (Student) o;
         return Objects.equals(id, student.id);
     }
 

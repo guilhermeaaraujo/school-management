@@ -1,6 +1,6 @@
 package com.guilherme.schoolmanagement.services;
 
-import com.guilherme.schoolmanagement.domain.User;
+import com.guilherme.schoolmanagement.domain.entities.User;
 import com.guilherme.schoolmanagement.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

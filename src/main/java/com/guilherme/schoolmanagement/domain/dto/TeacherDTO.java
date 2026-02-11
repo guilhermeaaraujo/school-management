@@ -1,6 +1,6 @@
 package com.guilherme.schoolmanagement.domain.dto;
 
-import com.guilherme.schoolmanagement.domain.Teacher;
+import com.guilherme.schoolmanagement.domain.entities.Teacher;
 
 public record TeacherDTO(Long id, String name) {
 

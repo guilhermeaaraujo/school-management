@@ -1,6 +1,6 @@
 package com.guilherme.schoolmanagement.domain.dto;
 
-import com.guilherme.schoolmanagement.domain.Subject;
+import com.guilherme.schoolmanagement.domain.entities.Subject;
 
 public record SubjectDTO(Long id, String name) {
 
