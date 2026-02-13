@@ -43,7 +43,9 @@ public class TeacherService {
     public Teacher update(Long id, Teacher newTeacher) {
         try {
             Teacher teacher = teacherRepository.getReferenceById(id);
-            teacher.setName(newTeacher.getName());
+            teacher.setFirstName(newTeacher.getFirstName());
+            teacher.setLastName(newTeacher.getLastName());
+            teacher.setBirthDate(newTeacher.getBirthDate());
             return teacherRepository.save(teacher);
         } catch (EntityNotFoundException e) {
             throw new RuntimeException("Resource not found");

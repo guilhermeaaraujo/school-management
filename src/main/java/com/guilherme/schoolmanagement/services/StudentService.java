@@ -43,7 +43,9 @@ public class StudentService {
     public Student update(Long id, Student newStudent) {
         try {
             Student student = studentRepository.getReferenceById(id);
-            student.setName(newStudent.getName());
+            student.setFirstName(newStudent.getFirstName());
+            student.setLastName(newStudent.getLastName());
+            student.setBirthDate(newStudent.getBirthDate());
             return studentRepository.save(student);
         } catch (EntityNotFoundException e) {
             throw new RuntimeException("Resource not found");

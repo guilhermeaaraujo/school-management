@@ -2,6 +2,7 @@ package com.guilherme.schoolmanagement.domain.entities;
 
 import jakarta.persistence.*;
 
+import java.sql.Date;
 import java.util.Objects;
 
 @Entity
@@ -12,7 +13,10 @@ public class Teacher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String firstName;
+    private String lastName;
+
+    private Date birthDate;
 
     @OneToOne
     @JoinColumn(name = "user_id")
@@ -26,12 +30,28 @@ public class Teacher {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     public User getUser() {
