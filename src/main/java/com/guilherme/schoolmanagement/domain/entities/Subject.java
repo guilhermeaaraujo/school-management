@@ -2,6 +2,7 @@ package com.guilherme.schoolmanagement.domain.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -13,6 +14,9 @@ public class Subject {
     private Long id;
 
     private String name;
+
+    @OneToMany(mappedBy = "subject")
+    private List<SchoolClass> classes;
 
     public Long getId() {
         return id;
@@ -28,6 +32,10 @@ public class Subject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<SchoolClass> getClasses() {
+        return classes;
     }
 
     @Override
