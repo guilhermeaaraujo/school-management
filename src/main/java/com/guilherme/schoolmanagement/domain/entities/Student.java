@@ -3,6 +3,7 @@ package com.guilherme.schoolmanagement.domain.entities;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,7 +19,7 @@ public class Student {
     private String firstName;
     private String lastName;
 
-    private Date birthDate;
+    private LocalDate birthDate;
 
     @OneToOne
     @JoinColumn(name = "user_id")
@@ -51,11 +52,11 @@ public class Student {
         this.lastName = lastName;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 

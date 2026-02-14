@@ -41,6 +41,7 @@ public class SubjectController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<SubjectDTO> insert(@RequestBody Subject subject) {
+        service.insert(subject);
         return ResponseEntity.status(HttpStatus.CREATED).body(new SubjectDTO(subject));
     }
 

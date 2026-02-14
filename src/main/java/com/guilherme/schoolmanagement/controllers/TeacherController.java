@@ -41,6 +41,7 @@ public class TeacherController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<TeacherDTO> insert(@RequestBody Teacher teacher) {
+        service.insert(teacher);
         return ResponseEntity.status(HttpStatus.CREATED).body(new TeacherDTO(teacher));
     }
 

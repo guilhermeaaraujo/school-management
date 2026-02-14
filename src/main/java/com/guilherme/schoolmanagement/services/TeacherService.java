@@ -1,6 +1,7 @@
 package com.guilherme.schoolmanagement.services;
 
 import com.guilherme.schoolmanagement.domain.entities.Teacher;
+import com.guilherme.schoolmanagement.domain.entities.User;
 import com.guilherme.schoolmanagement.repositories.TeacherRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class TeacherService {
     @Autowired
     private TeacherRepository teacherRepository;
 
+    @Autowired
+    private UserService userService;
+
     public List<Teacher> findAll() {
         return teacherRepository.findAll();
     }
@@ -27,6 +31,7 @@ public class TeacherService {
     }
 
     public Teacher insert(Teacher teacher) {
+        userService.insert(teacher.getUser());
         return teacherRepository.save(teacher);
     }
 

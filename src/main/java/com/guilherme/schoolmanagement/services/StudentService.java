@@ -16,6 +16,9 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
+    @Autowired
+    private UserService userService;
+
     public List<Student> findAll() {
         return studentRepository.findAll();
     }
@@ -26,7 +29,9 @@ public class StudentService {
         );
     }
 
+    // Regra de negócio: quando um estudando é adicionado, um usuário é criado para ele e inserido também no banco de dados.
     public Student insert(Student student) {
+        userService.insert(student.getUser());
         return studentRepository.save(student);
     }
 
