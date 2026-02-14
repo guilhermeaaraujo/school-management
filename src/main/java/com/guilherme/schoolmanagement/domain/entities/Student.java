@@ -3,6 +3,8 @@ package com.guilherme.schoolmanagement.domain.entities;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,6 +23,9 @@ public class Student {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToMany(mappedBy = "students")
+    private List<SchoolClass> classes = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -60,6 +65,10 @@ public class Student {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<SchoolClass> getClasses() {
+        return classes;
     }
 
     @Override
