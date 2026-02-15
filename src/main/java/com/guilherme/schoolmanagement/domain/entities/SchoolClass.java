@@ -1,5 +1,6 @@
 package com.guilherme.schoolmanagement.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;

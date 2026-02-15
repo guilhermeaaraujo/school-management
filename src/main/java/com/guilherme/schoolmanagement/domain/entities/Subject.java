@@ -1,5 +1,6 @@
 package com.guilherme.schoolmanagement.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class Subject {
 
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "subject")
     private List<SchoolClass> classes;
 

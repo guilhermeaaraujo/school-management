@@ -22,13 +22,13 @@ public class SchoolClassController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<SchoolClassDTO>> findAll() {
-        List<SchoolClass> schoolClasss = service.findAll();
-        List<SchoolClassDTO> schoolClasssDTO = new ArrayList<>();
+        List<SchoolClass> schoolClass = service.findAll();
+        List<SchoolClassDTO> schoolClassDTO = new ArrayList<>();
 
-        for (SchoolClass x : schoolClasss) {
-            schoolClasssDTO.add(new SchoolClassDTO(x));
+        for (SchoolClass x : schoolClass) {
+            schoolClassDTO.add(new SchoolClassDTO(x));
         }
-        return ResponseEntity.ok().body(schoolClasssDTO);
+        return ResponseEntity.ok().body(schoolClassDTO);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -49,6 +49,20 @@ public class SchoolClassController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         service.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasRole('TEACHER')")
+    @PutMapping("/{classId}/students/{studentId}")
+    public ResponseEntity<Void> addStudentToClass(@PathVariable Long studentId, @PathVariable Long classId) {
+        service.addStudentToClass(studentId, classId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasRole('TEACHER')")
+    @DeleteMapping("/{classId}/students/{studentId}")
+    public ResponseEntity<Void> removeStudentFromClass(@PathVariable Long studentId, @PathVariable Long classId) {
+        service.removeStudentFromClass(studentId, classId);
         return ResponseEntity.noContent().build();
     }
 }
