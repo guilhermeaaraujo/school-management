@@ -9,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -31,6 +32,12 @@ public class TeacherService {
     }
 
     public Teacher insert(Teacher teacher) {
+        teacher.getUser().setPassword(
+                teacher.getBirthDate().format(
+                        DateTimeFormatter.ofPattern("ddMMyyyy")
+                )
+        );
+
         userService.insert(teacher.getUser());
         return teacherRepository.save(teacher);
     }

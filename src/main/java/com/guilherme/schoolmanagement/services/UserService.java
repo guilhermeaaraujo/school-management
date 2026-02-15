@@ -20,10 +20,6 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Resource not Found")
@@ -36,25 +32,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void deleteById(Long id) {
-        try {
-            userRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new RuntimeException("Resource not found");
-        } catch (DataIntegrityViolationException e) {
-            throw new RuntimeException("Cannot delete this user");
-        }
-    }
-
-    public User update(Long id, User newUser) {
-        try {
-            User user = userRepository.getReferenceById(id);
-            user.setEmail(newUser.getEmail());
-            user.setPassword(newUser.getPassword());
-            user.setRole(newUser.getRole());
-            return userRepository.save(user);
-        } catch (EntityNotFoundException e) {
-            throw new RuntimeException("Resource not found");
-        }
+    public void updatePassword(Long id, String newPassword) {
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("User not found")
+        );
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -29,8 +30,13 @@ public class StudentService {
         );
     }
 
-    // Regra de negócio: quando um estudando é adicionado, um usuário é criado para ele e inserido também no banco de dados.
     public Student insert(Student student) {
+        student.getUser().setPassword(
+                student.getBirthDate().format(
+                        DateTimeFormatter.ofPattern("ddMMyyyy")
+                )
+        );
+
         userService.insert(student.getUser());
         return studentRepository.save(student);
     }
