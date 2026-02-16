@@ -117,4 +117,29 @@ class StudentServiceTest {
         assertThat(result).isEqualTo(newStudent);
         verify(repository).save(newStudent);
     }
+
+    @Test
+    @DisplayName("Should successfully get an student by its user Id")
+    void findByUserId() {
+        Long id = 1L;
+        Student student = new Student();
+
+        when(repository.findByUserId(id)).thenReturn(Optional.of(student));
+
+        Student result = service.findByUserId(id);
+
+        assertThat(result).isEqualTo(student);
+        verify(repository).findByUserId(id);
+    }
+
+    @Test
+    @DisplayName("Should throw an exception when student does not exists")
+    void findByUserIdShouldThrowException() {
+        Long id = 1L;
+
+        when(repository.findByUserId(id)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> service.findByUserId(id)).isInstanceOf(ResourceNotFoundException.class);
+        verify(repository).findByUserId(id);
+    }
 }
