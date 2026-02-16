@@ -5,7 +5,7 @@ CREATE TABLE teachers (
     birth_date DATE,
     user_id BIGINT NOT NULL,
 
-    CONSTRAINT fk_student_user
+    CONSTRAINT fk_teacher_user
         FOREIGN KEY (user_id)
         REFERENCES users(id)
         ON DELETE CASCADE
