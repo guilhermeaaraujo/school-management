@@ -20,6 +20,13 @@ public class Subject {
     @OneToMany(mappedBy = "subject")
     private List<SchoolClass> classes;
 
+    public Subject() {
+    }
+
+    public Subject(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }

@@ -27,6 +27,14 @@ public class SchoolClass {
     @JoinTable(name = "enrollments", joinColumns = @JoinColumn(name = "class_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
     private List<Student> students = new ArrayList<>();
 
+    public SchoolClass() {
+    }
+
+    public SchoolClass(Subject subject, Teacher teacher) {
+        this.subject = subject;
+        this.teacher = teacher;
+    }
+
     public Long getId() {
         return id;
     }

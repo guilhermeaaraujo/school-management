@@ -28,6 +28,16 @@ public class Teacher {
     @OneToMany(mappedBy = "teacher")
     private List<SchoolClass> classes = new ArrayList<>();
 
+    public Teacher() {
+    }
+
+    public Teacher(String firstName, String lastName, LocalDate birthDate, User user) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }

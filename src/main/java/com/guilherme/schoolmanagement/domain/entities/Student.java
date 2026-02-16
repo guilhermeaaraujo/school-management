@@ -28,6 +28,16 @@ public class Student {
     @ManyToMany(mappedBy = "students")
     private List<SchoolClass> classes = new ArrayList<>();
 
+    public Student() {
+    }
+
+    public Student(String firstName, String lastName, LocalDate birthDate, User user) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }
