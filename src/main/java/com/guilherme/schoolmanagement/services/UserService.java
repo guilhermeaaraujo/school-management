@@ -1,6 +1,7 @@
 package com.guilherme.schoolmanagement.services;
 
 import com.guilherme.schoolmanagement.domain.entities.User;
+import com.guilherme.schoolmanagement.exceptions.ResourceNotFoundException;
 import com.guilherme.schoolmanagement.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.lang.module.ResolutionException;
 import java.util.List;
 
 @Service
@@ -22,7 +24,7 @@ public class UserService {
 
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Resource not Found")
+                () -> new ResourceNotFoundException("User not found, id: " + id)
         );
     }
 
@@ -34,7 +36,7 @@ public class UserService {
 
     public void updatePassword(Long id, String newPassword) {
         User user = userRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("User not found")
+                () -> new ResourceNotFoundException("User not found, id: " + id)
         );
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);

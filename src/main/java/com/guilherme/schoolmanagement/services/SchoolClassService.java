@@ -2,6 +2,7 @@ package com.guilherme.schoolmanagement.services;
 
 import com.guilherme.schoolmanagement.domain.entities.SchoolClass;
 import com.guilherme.schoolmanagement.domain.entities.Student;
+import com.guilherme.schoolmanagement.exceptions.ResourceNotFoundException;
 import com.guilherme.schoolmanagement.repositories.SchoolClassRepository;
 import com.guilherme.schoolmanagement.repositories.StudentRepository;
 import jakarta.transaction.Transactional;
@@ -27,7 +28,7 @@ public class SchoolClassService {
 
     public SchoolClass findById(Long id) {
         return schoolClassRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Resource not Found")
+                () -> new ResourceNotFoundException("School class not found, id: " + id)
         );
     }
 
@@ -39,7 +40,7 @@ public class SchoolClassService {
         try {
             schoolClassRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new RuntimeException("Resource nowt found");
+            throw new ResourceNotFoundException("School class not found, id: " + id);
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException("Cannot delete this schoolClass");
         }
@@ -48,11 +49,11 @@ public class SchoolClassService {
     @Transactional
     public void addStudentToClass(Long studentId, Long classId) {
         Student student = studentRepository.findById(studentId).orElseThrow(
-                () -> new RuntimeException("Student not Found")
+                () -> new ResourceNotFoundException("Student not found, id: " + studentId)
         );
 
         SchoolClass schoolClass = schoolClassRepository.findById(classId).orElseThrow(
-                () -> new RuntimeException("Class not found")
+                () -> new ResourceNotFoundException("School class not found, id: " + classId)
         );
 
         schoolClass.getStudents().add(student);
@@ -62,11 +63,11 @@ public class SchoolClassService {
     @Transactional
     public void removeStudentFromClass(Long studentId, Long classId) {
         Student student = studentRepository.findById(studentId).orElseThrow(
-                () -> new RuntimeException("Student not Found")
+                () -> new ResourceNotFoundException("Student not found, id: " + studentId)
         );
 
         SchoolClass schoolClass = schoolClassRepository.findById(classId).orElseThrow(
-                () -> new RuntimeException("Class not found")
+                () -> new ResourceNotFoundException("School class not found, id: " + classId)
         );
 
         schoolClass.getStudents().remove(student);

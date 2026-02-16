@@ -2,6 +2,7 @@ package com.guilherme.schoolmanagement.services;
 
 import com.guilherme.schoolmanagement.domain.entities.Teacher;
 import com.guilherme.schoolmanagement.domain.entities.User;
+import com.guilherme.schoolmanagement.exceptions.ResourceNotFoundException;
 import com.guilherme.schoolmanagement.repositories.TeacherRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class TeacherService {
 
     public Teacher findById(Long id) {
         return teacherRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Resource not Found")
+                () -> new ResourceNotFoundException("Teacher not found, id: " + id)
         );
     }
 
@@ -46,7 +47,7 @@ public class TeacherService {
         try {
             teacherRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new RuntimeException("Resource not found");
+            throw new ResourceNotFoundException("Teacher not found, id: " + id);
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException("Cannot delete this teacher");
         }
@@ -60,7 +61,7 @@ public class TeacherService {
             teacher.setBirthDate(newTeacher.getBirthDate());
             return teacherRepository.save(teacher);
         } catch (EntityNotFoundException e) {
-            throw new RuntimeException("Resource not found");
+            throw new ResourceNotFoundException("Teacher not found, id: " + id);
         }
     }
 }

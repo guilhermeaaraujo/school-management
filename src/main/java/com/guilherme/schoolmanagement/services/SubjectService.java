@@ -1,6 +1,7 @@
 package com.guilherme.schoolmanagement.services;
 
 import com.guilherme.schoolmanagement.domain.entities.Subject;
+import com.guilherme.schoolmanagement.exceptions.ResourceNotFoundException;
 import com.guilherme.schoolmanagement.repositories.SubjectRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class SubjectService {
 
     public Subject findById(Long id) {
         return subjectRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Resource not Found")
+                () -> new ResourceNotFoundException("Subject not found, id: " + id)
         );
     }
 
@@ -34,7 +35,7 @@ public class SubjectService {
         try {
             subjectRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new RuntimeException("Resource not found");
+            throw new ResourceNotFoundException("Subject not found, id: " + id);
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException("Cannot delete this subject");
         }
@@ -46,7 +47,7 @@ public class SubjectService {
             subject.setName(newSubject.getName());
             return subjectRepository.save(subject);
         } catch (EntityNotFoundException e) {
-            throw new RuntimeException("Resource not found");
+            throw new ResourceNotFoundException("Subject not found, id: " + id);
         }
     }
 }
