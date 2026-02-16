@@ -1,5 +1,6 @@
 package com.guilherme.schoolmanagement.services;
 
+import com.guilherme.schoolmanagement.domain.entities.Student;
 import com.guilherme.schoolmanagement.domain.entities.Teacher;
 import com.guilherme.schoolmanagement.domain.entities.User;
 import com.guilherme.schoolmanagement.exceptions.ResourceNotFoundException;
@@ -64,5 +65,11 @@ public class TeacherService {
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Teacher not found, id: " + id);
         }
+    }
+
+    public Teacher findByUserId(Long userId) {
+        return teacherRepository.findByUserId(userId).orElseThrow(
+                () -> new ResourceNotFoundException("Teacher not found, id: " + userId)
+        );
     }
 }

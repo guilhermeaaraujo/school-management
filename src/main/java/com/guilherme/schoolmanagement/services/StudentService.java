@@ -63,4 +63,10 @@ public class StudentService {
             throw new ResourceNotFoundException("Student not found, id: " + id);
         }
     }
+
+    public Student findByUserId(Long userId) {
+        return studentRepository.findByUserId(userId).orElseThrow(
+                () -> new ResourceNotFoundException("Student not found, id: " + userId)
+        );
+    }
 }
