@@ -1,4 +1,4 @@
-package com.guilherme.schoolmanagement.domain.dto;
+package com.guilherme.schoolmanagement.domain.dto.response;
 
 import com.guilherme.schoolmanagement.domain.entities.Teacher;
 

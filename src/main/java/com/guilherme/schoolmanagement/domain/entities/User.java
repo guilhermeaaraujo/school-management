@@ -35,6 +35,11 @@ public class User implements UserDetails {
         this.role = role;
     }
 
+    public User(String email, UserRole role) {
+        this.email = email;
+        this.role = role;
+    }
+
     public Long getId() {
         return id;
     }

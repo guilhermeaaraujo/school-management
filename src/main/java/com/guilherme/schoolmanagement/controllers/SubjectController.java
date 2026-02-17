@@ -1,7 +1,7 @@
 package com.guilherme.schoolmanagement.controllers;
 
 import com.guilherme.schoolmanagement.domain.entities.Subject;
-import com.guilherme.schoolmanagement.domain.dto.SubjectDTO;
+import com.guilherme.schoolmanagement.domain.dto.response.SubjectDTO;
 import com.guilherme.schoolmanagement.services.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,10 @@
 package com.guilherme.schoolmanagement.controllers;
 
+import com.guilherme.schoolmanagement.domain.dto.request.EntityRequestDTO;
 import com.guilherme.schoolmanagement.domain.entities.Student;
-import com.guilherme.schoolmanagement.domain.dto.StudentDTO;
+import com.guilherme.schoolmanagement.domain.dto.response.StudentDTO;
+import com.guilherme.schoolmanagement.domain.entities.User;
+import com.guilherme.schoolmanagement.domain.enums.UserRole;
 import com.guilherme.schoolmanagement.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,8 +43,9 @@ public class StudentController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<StudentDTO> insert(@RequestBody Student student) {
-        service.insert(student);
+    public ResponseEntity<StudentDTO> insert(@RequestBody EntityRequestDTO requestDTO) {
+        Student student = new Student(requestDTO.firstName(), requestDTO.lastName(), requestDTO.birthDate(), new User(requestDTO.email(), null, UserRole.STUDENT));
+        student = service.insert(student);
         return ResponseEntity.status(HttpStatus.CREATED).body(new StudentDTO(student));
     }
 
@@ -54,7 +58,8 @@ public class StudentController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<StudentDTO> update(@PathVariable Long id, @RequestBody Student student) {
+    public ResponseEntity<StudentDTO> update(@PathVariable Long id, @RequestBody EntityRequestDTO requestDTO) {
+        Student student = new Student(requestDTO.firstName(), requestDTO.lastName(), requestDTO.birthDate(), new User(requestDTO.email(), UserRole.STUDENT));
         student = service.update(id, student);
         return ResponseEntity.ok().body(new StudentDTO(student));
     }

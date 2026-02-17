@@ -1,6 +1,6 @@
 package com.guilherme.schoolmanagement.controllers;
 
-import com.guilherme.schoolmanagement.domain.dto.SchoolClassDTO;
+import com.guilherme.schoolmanagement.domain.dto.response.SchoolClassDTO;
 import com.guilherme.schoolmanagement.domain.entities.SchoolClass;
 import com.guilherme.schoolmanagement.services.SchoolClassService;
 import org.springframework.beans.factory.annotation.Autowired;

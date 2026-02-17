@@ -1,7 +1,11 @@
 package com.guilherme.schoolmanagement.controllers;
 
+import com.guilherme.schoolmanagement.domain.dto.request.EntityRequestDTO;
+import com.guilherme.schoolmanagement.domain.entities.Student;
 import com.guilherme.schoolmanagement.domain.entities.Teacher;
-import com.guilherme.schoolmanagement.domain.dto.TeacherDTO;
+import com.guilherme.schoolmanagement.domain.dto.response.TeacherDTO;
+import com.guilherme.schoolmanagement.domain.entities.User;
+import com.guilherme.schoolmanagement.domain.enums.UserRole;
 import com.guilherme.schoolmanagement.services.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,8 +44,9 @@ public class TeacherController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<TeacherDTO> insert(@RequestBody Teacher teacher) {
-        service.insert(teacher);
+    public ResponseEntity<TeacherDTO> insert(@RequestBody EntityRequestDTO requestDTO) {
+        Teacher teacher = new Teacher(requestDTO.firstName(), requestDTO.lastName(), requestDTO.birthDate(), new User(requestDTO.email(), null, UserRole.TEACHER));
+        teacher = service.insert(teacher);
         return ResponseEntity.status(HttpStatus.CREATED).body(new TeacherDTO(teacher));
     }
 
@@ -54,7 +59,8 @@ public class TeacherController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<TeacherDTO> update(@PathVariable Long id, @RequestBody Teacher teacher) {
+    public ResponseEntity<TeacherDTO> update(@PathVariable Long id, @RequestBody EntityRequestDTO requestDTO) {
+        Teacher teacher = new Teacher(requestDTO.firstName(), requestDTO.lastName(), requestDTO.birthDate(), new User(requestDTO.email(), UserRole.TEACHER));
         teacher = service.update(id, teacher);
         return ResponseEntity.ok().body(new TeacherDTO(teacher));
     }
