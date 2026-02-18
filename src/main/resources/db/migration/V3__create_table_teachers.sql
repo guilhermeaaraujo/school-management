@@ -3,7 +3,7 @@ CREATE TABLE teachers (
     first_name VARCHAR(255),
     last_name VARCHAR(255),
     birth_date DATE,
-    user_id BIGINT NOT NULL,
+    user_id BIGINT,
 
     CONSTRAINT fk_teacher_user
         FOREIGN KEY (user_id)

@@ -1,7 +1,7 @@
 CREATE TABLE school_classes (
     id SERIAL PRIMARY KEY,
-    subject_id BIGINT NOT NULL,
-    teacher_id BIGINT NOT NULL,
+    subject_id BIGINT,
+    teacher_id BIGINT,
 
     CONSTRAINT fk_class_subject
         FOREIGN KEY (subject_id)
