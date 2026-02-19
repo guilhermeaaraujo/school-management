@@ -2,15 +2,20 @@ package com.guilherme.schoolmanagement.services;
 
 import com.guilherme.schoolmanagement.domain.entities.SchoolClass;
 import com.guilherme.schoolmanagement.domain.entities.Student;
+import com.guilherme.schoolmanagement.domain.entities.Teacher;
+import com.guilherme.schoolmanagement.domain.enums.UserRole;
 import com.guilherme.schoolmanagement.exceptions.ResourceNotFoundException;
 import com.guilherme.schoolmanagement.repositories.SchoolClassRepository;
 import com.guilherme.schoolmanagement.repositories.StudentRepository;
+import com.guilherme.schoolmanagement.repositories.TeacherRepository;
+import com.guilherme.schoolmanagement.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,6 +26,9 @@ public class SchoolClassService {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private TeacherRepository teacherRepository;
 
     public List<SchoolClass> findAll() {
         return schoolClassRepository.findAll();
@@ -72,5 +80,18 @@ public class SchoolClassService {
 
         schoolClass.getStudents().remove(student);
         schoolClassRepository.save(schoolClass);
+    }
+
+    public List<SchoolClass> findAllByUserId(Long userId, UserRole role) {
+
+        if (role == UserRole.STUDENT) {
+            Student student = studentRepository.findByUserId(userId).orElseThrow(
+                    () -> new ResourceNotFoundException("Student not found, user.id: " + userId));
+            return schoolClassRepository.findAllByStudentsId(student.getId());
+        } else {
+            Teacher teacher = teacherRepository.findByUserId(userId).orElseThrow(
+                    () -> new ResourceNotFoundException("Teacher not found, user.id: " + userId));;
+            return schoolClassRepository.findAllByTeacherId(teacher.getId());
+        }
     }
 }

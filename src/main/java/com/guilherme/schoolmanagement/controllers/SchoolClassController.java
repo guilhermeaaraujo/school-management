@@ -2,7 +2,9 @@ package com.guilherme.schoolmanagement.controllers;
 
 import com.guilherme.schoolmanagement.domain.dto.response.SchoolClassDTO;
 import com.guilherme.schoolmanagement.domain.entities.SchoolClass;
+import com.guilherme.schoolmanagement.domain.entities.User;
 import com.guilherme.schoolmanagement.services.SchoolClassService;
+import com.guilherme.schoolmanagement.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,9 @@ public class SchoolClassController {
 
     @Autowired
     private SchoolClassService service;
+
+    @Autowired
+    private UserService userService;
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
@@ -64,5 +69,14 @@ public class SchoolClassController {
     public ResponseEntity<Void> removeStudentFromClass(@PathVariable Long studentId, @PathVariable Long classId) {
         service.removeStudentFromClass(studentId, classId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<List<SchoolClassDTO>> findAuthenticatedUserClasses() {
+        User user = userService.findAuthenticatedUserDetails();
+        List<SchoolClass> classes = service.findAllByUserId(user.getId(), user.getRole());
+        List<SchoolClassDTO> schoolClassDTO = classes.stream().map(SchoolClassDTO::new).toList();
+
+        return ResponseEntity.ok().body(schoolClassDTO);
     }
 }
