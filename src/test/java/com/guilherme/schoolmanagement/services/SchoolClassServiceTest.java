@@ -2,9 +2,13 @@ package com.guilherme.schoolmanagement.services;
 
 import com.guilherme.schoolmanagement.domain.entities.SchoolClass;
 import com.guilherme.schoolmanagement.domain.entities.Student;
+import com.guilherme.schoolmanagement.domain.entities.Teacher;
+import com.guilherme.schoolmanagement.domain.entities.User;
+import com.guilherme.schoolmanagement.domain.enums.UserRole;
 import com.guilherme.schoolmanagement.exceptions.ResourceNotFoundException;
 import com.guilherme.schoolmanagement.repositories.SchoolClassRepository;
 import com.guilherme.schoolmanagement.repositories.StudentRepository;
+import com.guilherme.schoolmanagement.repositories.TeacherRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +21,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -27,6 +30,9 @@ class SchoolClassServiceTest {
 
     @Mock
     private StudentRepository studentRepository;
+
+    @Mock
+    private TeacherRepository teacherRepository;
 
     @Mock
     private SchoolClassRepository repository;
@@ -129,5 +135,54 @@ class SchoolClassServiceTest {
 
         assertThat(schoolClass.getStudents()).hasSize(0);
         verify(repository).save(schoolClass);
+    }
+
+    @Test
+    @DisplayName("Should return all the classes the user is enrolled to if its a Student")
+    void findAllByUserIdIfItsAStudent() {
+        User user = new User();
+        Long userId = 1L;
+        user.setId(1L);
+        UserRole role = UserRole.STUDENT;
+        user.setRole(role);
+
+        Student student = new Student();
+        Long studentId = 1L;
+        student.setId(studentId);
+
+        when(studentRepository.findByUserId(userId)).thenReturn(Optional.of(student));
+
+        List<SchoolClass> classes = List.of(new SchoolClass(), new SchoolClass());
+
+        when(repository.findAllByStudentsId(studentId)).thenReturn(classes);
+
+        List<SchoolClass> result = service.findAllByUserId(userId, role);
+
+        assertThat(result).hasSize(2);
+        verify(repository).findAllByStudentsId(studentId);
+    }
+
+    @DisplayName("Should return all the classes the user is enrolled to if its a Teacher")
+    void findAllByUserIdIfItsATeacher() {
+        User user = new User();
+        Long userId = 1L;
+        user.setId(1L);
+        UserRole role = UserRole.STUDENT;
+        user.setRole(role);
+
+        Teacher teacher = new Teacher();
+        Long teacherId = 1L;
+        teacher.setId(teacherId);
+
+        when(teacherRepository.findByUserId(userId)).thenReturn(Optional.of(teacher));
+
+        List<SchoolClass> classes = List.of(new SchoolClass(), new SchoolClass());
+
+        when(repository.findAllByStudentsId(teacherId)).thenReturn(classes);
+
+        List<SchoolClass> result = service.findAllByUserId(userId, role);
+
+        assertThat(result).hasSize(2);
+        verify(repository).findAllByStudentsId(teacherId);
     }
 }
