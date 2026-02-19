@@ -28,11 +28,8 @@ public class SchoolClassController {
     @GetMapping
     public ResponseEntity<List<SchoolClassDTO>> findAll() {
         List<SchoolClass> schoolClass = service.findAll();
-        List<SchoolClassDTO> schoolClassDTO = new ArrayList<>();
+        List<SchoolClassDTO> schoolClassDTO = schoolClass.stream().map(x -> new SchoolClassDTO(x)).toList();
 
-        for (SchoolClass x : schoolClass) {
-            schoolClassDTO.add(new SchoolClassDTO(x));
-        }
         return ResponseEntity.ok().body(schoolClassDTO);
     }
 
@@ -75,7 +72,7 @@ public class SchoolClassController {
     public ResponseEntity<List<SchoolClassDTO>> findAuthenticatedUserClasses() {
         User user = userService.findAuthenticatedUserDetails();
         List<SchoolClass> classes = service.findAllByUserId(user.getId(), user.getRole());
-        List<SchoolClassDTO> schoolClassDTO = classes.stream().map(SchoolClassDTO::new).toList();
+        List<SchoolClassDTO> schoolClassDTO = classes.stream().map(x -> new SchoolClassDTO(x)).toList();
 
         return ResponseEntity.ok().body(schoolClassDTO);
     }

@@ -27,11 +27,8 @@ public class TeacherController {
     @GetMapping
     public ResponseEntity<List<TeacherDTO>> findAll() {
         List<Teacher> teachers = service.findAll();
-        List<TeacherDTO> teachersDTO = new ArrayList<>();
+        List<TeacherDTO> teachersDTO = teachers.stream().map(x -> new TeacherDTO(x)).toList();
 
-        for (Teacher x : teachers) {
-            teachersDTO.add(new TeacherDTO(x));
-        }
         return ResponseEntity.ok().body(teachersDTO);
     }
 

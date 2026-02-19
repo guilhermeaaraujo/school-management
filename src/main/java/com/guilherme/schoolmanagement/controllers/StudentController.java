@@ -26,11 +26,8 @@ public class StudentController {
     @GetMapping
     public ResponseEntity<List<StudentDTO>> findAll() {
         List<Student> students = service.findAll();
-        List<StudentDTO> studentsDTO = new ArrayList<>();
+        List<StudentDTO> studentsDTO = students.stream().map(x -> new StudentDTO(x)).toList();
 
-        for (Student x : students) {
-            studentsDTO.add(new StudentDTO(x));
-        }
         return ResponseEntity.ok().body(studentsDTO);
     }
 

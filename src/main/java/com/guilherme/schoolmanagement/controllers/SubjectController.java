@@ -23,11 +23,8 @@ public class SubjectController {
     @GetMapping
     public ResponseEntity<List<SubjectDTO>> findAll() {
         List<Subject> subjects = service.findAll();
-        List<SubjectDTO> subjectsDTO = new ArrayList<>();
+        List<SubjectDTO> subjectsDTO = subjects.stream().map(x -> new SubjectDTO(x)).toList();
 
-        for (Subject x : subjects) {
-            subjectsDTO.add(new SubjectDTO(x));
-        }
         return ResponseEntity.ok().body(subjectsDTO);
     }
 
