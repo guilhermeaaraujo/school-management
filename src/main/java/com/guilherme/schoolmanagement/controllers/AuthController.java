@@ -1,5 +1,6 @@
 package com.guilherme.schoolmanagement.controllers;
 
+import com.guilherme.schoolmanagement.config.SecurityConfig;
 import com.guilherme.schoolmanagement.config.TokenService;
 import com.guilherme.schoolmanagement.domain.dto.response.UserDTO;
 import com.guilherme.schoolmanagement.domain.dto.request.UpdatePasswordRequest;
@@ -12,6 +13,10 @@ import com.guilherme.schoolmanagement.domain.enums.UserRole;
 import com.guilherme.schoolmanagement.services.StudentService;
 import com.guilherme.schoolmanagement.services.TeacherService;
 import com.guilherme.schoolmanagement.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +27,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "authentication", description = "Controlador para autenticação e recuperar/alterar dados do usuário autenticado")
+@SecurityRequirement(name = SecurityConfig.SECURITY)
 public class AuthController {
 
     @Autowired
@@ -40,6 +47,10 @@ public class AuthController {
     private TeacherService teacherService;
 
     @PostMapping("/login")
+    @Operation(summary = "Loga o usuário na API", description = "Metódo de login")
+    @ApiResponse(responseCode = "200", description = "Usuário logado com sucesso")
+    @ApiResponse(responseCode = "400", description = "Email ou senha incorretos")
+    @ApiResponse(responseCode = "500", description = "Erro no servidor")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(request.email(), request.password());
         var authentication = authenticationManager.authenticate(usernamePassword);
@@ -51,20 +62,22 @@ public class AuthController {
 
     @PreAuthorize("hasRole('STUDENT')")
     @PutMapping("/me/updatepassword")
+    @Operation(summary = "Atualiza a senha do usuário", description = "Metódo para alterar a senha do usuário autenticado")
+    @ApiResponse(responseCode = "200", description = "Senha atualizada com sucesso")
+    @ApiResponse(responseCode = "400", description = "Email ou senha incorretos")
+    @ApiResponse(responseCode = "500", description = "Erro no servidor")
     public ResponseEntity<Void> updatePassword(@RequestBody UpdatePasswordRequest request) {
         User authenticatedUser = userService.findAuthenticatedUserDetails();
-        String email = authenticatedUser.getEmail();
 
-        User user = userService.findById(authenticatedUser.getId());
-        if (!user.getEmail().equals(email)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
         userService.updatePassword(authenticatedUser.getId(), request.password());
         return ResponseEntity.noContent().build();
     }
 
     @PreAuthorize("hasRole('STUDENT')")
     @GetMapping("/me")
+    @Operation(summary = "Busca dados do usuário autenticado", description = "Metódo para recuperar os dados do usuário autenticado")
+    @ApiResponse(responseCode = "200", description = "Usuário encontrado")
+    @ApiResponse(responseCode = "500", description = "Erro no servidor")
     public ResponseEntity<UserDTO> findAuthenticatedUserDetails() {
         User authenticatedUser = userService.findAuthenticatedUserDetails();
 
